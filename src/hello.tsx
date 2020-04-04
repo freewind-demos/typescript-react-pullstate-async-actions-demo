@@ -1,11 +1,13 @@
 import React from 'react'
-import {updateStore, getStore} from './store';
+import RemoteHello1 from './RemoteHello1';
+import RemoteHello2 from './RemoteHello2';
 
 export default function Hello() {
-  const {username} = getStore();
   return <div>
-    <h1>Hello {username}</h1>
+    <h2>Normal remote hello</h2>
+    <RemoteHello1/>
     <hr/>
-    <input type='text' value={username} onChange={event => updateStore(it => it.username = event.target.value)}/>
+    <h2>Pullstate async remote hello</h2>
+    <RemoteHello2/>
   </div>
 };

@@ -26,11 +26,17 @@ module.exports = {
   },
   module: {
     rules: [{
+      test: /\.css$/,
+      use: [
+        {loader: 'style-loader'},
+        {loader: 'css-loader'}
+      ]
+    }, {
       test: /\.js$/,
       use: [
         babelConfig
       ],
-      exclude : [
+      exclude: [
         /\bcore-js\b/,
         /\bwebpack\/buildin\b/
       ]
@@ -40,7 +46,7 @@ module.exports = {
         babelConfig,
         {loader: 'ts-loader'}
       ],
-      exclude : [
+      exclude: [
         /\bcore-js\b/,
         /\bwebpack\/buildin\b/
       ]
