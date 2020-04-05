@@ -12,19 +12,15 @@ const asyncFetch = createAsyncAction<string>(async (from) => {
 });
 
 export default function RemoteHello2() {
-  const [finished, result] = asyncFetch.useBeckon('RemoteHello2');
+  const remoteFetch = asyncFetch.use('RemoteHello2', { initiate: false });
 
-  if (!finished) {
+  if (remoteFetch.isLoading) {
     return <div>Loading...</div>;
   }
 
   return <div>
-    // FIXME how to do this like "RemoteHello1"?
-    {/*<button onClick={fetch}>Fetch remote message</button>*/}
-    {
-      result.error
-        ? <div className='error'>Error: {result.message}</div>
-        : <div className='success'>Hello, {result.payload}</div>
-    }
+    <button onClick={() => asyncFetch.run("RemoteHello2")}>Fetch remote message</button>
+    {remoteFetch.isFinished && remoteFetch.error && (<div className='error'>Error: {remoteFetch.message}</div>)}
+    {remoteFetch.renderPayload(payload => <div className='success'>Hello, {payload}</div>)}
   </div>
 };
