@@ -1,15 +1,8 @@
-import {createAsyncAction, errorResult, successResult} from "pullstate";
+import { createAsyncActionDirect } from "pullstate";
 import React from 'react';
 import fetchRemoteMessage from './fetchRemoteMessage';
 
-const asyncFetch = createAsyncAction<string>(async (from) => {
-  try {
-    const result = await fetchRemoteMessage(from);
-    return successResult(result);
-  } catch (error) {
-    return errorResult(undefined, error.message);
-  }
-});
+const asyncFetch = createAsyncActionDirect(fetchRemoteMessage);
 
 export default function RemoteHello2() {
   const remoteFetch = asyncFetch.use('RemoteHello2', { initiate: false });
@@ -19,8 +12,8 @@ export default function RemoteHello2() {
   }
 
   return <div>
-    <button onClick={() => asyncFetch.run("RemoteHello2")}>Fetch remote message</button>
+    <button onClick={() => remoteFetch.execute()}>Fetch remote message</button>
     {remoteFetch.isFinished && remoteFetch.error && (<div className='error'>Error: {remoteFetch.message}</div>)}
-    {remoteFetch.renderPayload(payload => <div className='success'>Hello, {payload}</div>)}
+    {remoteFetch.renderPayload((payload) => <div className='success'>Hello, {payload}</div>)}
   </div>
 };
